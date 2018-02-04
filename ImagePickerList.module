@@ -13,7 +13,7 @@ class ImagePickerList extends Process implements Module {
     public static function getModuleInfo() {
         return array(
             'title' => 'ImagePicker Lister',
-            'version' => 106,
+            'version' => 90,
             'summary' => 'ImagePicker Lister',
             'singular' => true,
             'autoload' => false,

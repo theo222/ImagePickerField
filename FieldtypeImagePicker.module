@@ -15,7 +15,7 @@ class FieldtypeImagePicker extends FieldtypeText {
     public static function getModuleInfo() {
         return [
             'title' => 'ImagePicker Field',
-            'version' => 100,
+            'version' => 90,
             'summary' => 'Field that stores an Image URL.',
             'installs' => 'InputfieldImagePicker, ImagePickerList',
         ];

@@ -15,7 +15,7 @@ class InputfieldImagePicker extends Inputfield {
     public static function getModuleInfo() {
         return [
             'title' => 'ImagePicker Input',
-            'version' => 101,
+            'version' => 90,
             'summary' => 'Input field for Images.',
             'requires' => 'FieldtypeImagePicker',
         ];
