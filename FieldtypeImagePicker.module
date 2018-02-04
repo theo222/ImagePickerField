@@ -38,7 +38,6 @@ class FieldtypeImagePicker extends FieldtypeText {
     public function getInputfield(Page $page, Field $field) {
         /** @var InputfieldImagePicker $inputField */
         $inputField = $this->modules->get("InputfieldImagePicker");
-        //$inputField->setFilters($field->filters);
         $this->session->ip_filters = $field->filters;
         $this->session->ip_thumbwidth = $field->thumnailwidth;
 
