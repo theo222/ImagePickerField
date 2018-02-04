@@ -1,0 +1,22 @@
+.InputfieldImagePickerOpen {
+    float:left;
+}
+
+.InputfieldImagePickerText {
+    overflow: hidden;
+    padding-left: 0.8em;
+    margin-top:0;
+    padding-top:0;
+}
+
+.InputfieldImagePickerInput {
+    margin: 0px 0px 10px 0px;
+}    
+
+.IpPreviewImage {
+    max-height:180px;   
+}
+
+.IpPreviewImageDiv {
+    margin-top:10px;
+}

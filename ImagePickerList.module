@@ -1,0 +1,137 @@
+<?php
+
+class ImagePickerList extends Process implements Module {
+
+    const adminPageName = 'ImagePickerList';
+
+    /**
+     * getModuleInfo is a module required by all modules to tell ProcessWire about them
+     *
+     * @return array
+     *
+     */
+    public static function getModuleInfo() {
+        return array(
+            'title' => 'ImagePicker Lister',
+            'version' => 106,
+            'summary' => 'ImagePicker Lister',
+            'singular' => true,
+            'autoload' => false,
+        );
+    }
+
+    public function ___execute() {
+        $admin = $this->pages->get($this->config->adminRootPageID);
+        $parent = $admin->child("name=setup");
+        if (!$parent->id)
+            $parent = $admin;
+        $page = $parent->child("name=" . self::adminPageName);
+
+        $sid = $this->input->get('sid');
+        $config = $this->session->get($sid);
+        $usid = urlencode($sid);
+
+        $selectors = $config["sele"];
+        $thumbw = $config["thumbw"];
+
+        if (substr($selectors, 0, 1) != ',')
+            $selectors = ',' . $selectors;
+
+        if ($thumbw < 50)
+            $thumbw = 150;
+
+
+        $get = $this->input->get('id');
+
+        $filter = '';
+        $showimages = false;
+
+        if (!$get) {
+            $get = $this->session->get('lastid' . $sid);
+        } else
+            $this->session->set('lastid' . $sid, $get);
+
+        if ($get) {
+            if ($get != 'over') {
+                if ($get !== 'all')
+                    $filter = ",id=$get";
+                $showimages = true;
+            }
+        }
+
+        $out = '<style>.flex-container>div {width:' . $thumbw . 'px;height:' . $thumbw . 'px;}</style>';
+        if ($showimages)
+            $out .= '<h4 class="sys"><a href="' . $page->url . '?sid=' . $usid . '&id=over&modal=1"><i class="fa fa-arrow-left"></i> ' . $this->_('Overview') . '</a></h4>';
+        $out .= '<h4 class="sys"><a href="' . $page->url . '?sid=' . $usid . '&id=all&modal=1"><i class="fa fa-th"></i> ' . $this->_('Open All') . '</a></h4>';
+        $filter .= $selectors;
+        foreach ($this->fields->find("type=FieldtypeImage") as $f) {
+            foreach ($this->pages->find("$f.count>0$filter") as $p) {
+                $out .= '<h4><a href="' . $page->url . '?sid=' . $usid . '&id=' . $p->id . '&modal=1">' . $p->title . '</a> (' . count($p->$f) . ')</h4>';
+                if ($showimages) {
+                    $out .= '<div class="flex-container">';
+                    foreach ($p->$f as $i) {
+                        if ($i->width > 260) {
+                            $origurl = $i->url;
+                            $i = $i->width(260);
+                        } else
+                            $origurl = $i->url;
+                        $out .= '<div class="imgcont"><img title="' . $i . '" class="selectableimg lazyload" data-origurl=' . $origurl . ' data-src="' . $i->url . '"></div>';
+                    }
+                    $out .= '</div>';
+                }
+            }
+        }
+        return $out;
+    }
+
+    public function ___install() {
+
+        if (ProcessWire::versionMajor == 2 && ProcessWire::versionMinor < 1) {
+            throw new WireException("This module requires ProcessWire 2.1 or newer");
+        }
+
+        $page = $this->getInstalledPage();
+        $this->message("Installed to {$page->path}");
+        if ($page->parent->name == 'setup')
+            $this->message("ImageSelector installed.");
+    }
+
+    /**
+     * Return the page that this Process is installed on 
+     *
+     */
+    protected function getInstalledPage() {
+
+        $admin = $this->pages->get($this->config->adminRootPageID);
+        $parent = $admin->child("name=setup");
+        if (!$parent->id)
+            $parent = $admin;
+        $page = $parent->child("name=" . self::adminPageName);
+
+        if (!$page->id) {
+            $page = new Page();
+            $page->parent = $parent;
+            $page->template = $this->templates->get('admin');
+            $page->name = self::adminPageName;
+            $page->title = "Image Picker List";
+            $page->process = $this;
+            $page->sort = $parent->numChildren;
+            $page->save();
+        }
+
+        return $page;
+    }
+
+    /**
+     * Uninstall the module
+     *
+     */
+    public function ___uninstall() {
+        $page = $this->getInstalledPage();
+        if ($page->id) {
+            $this->message("Removed {$page->path}");
+            $this->pages->delete($page);
+        }
+    }
+
+}

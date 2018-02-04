@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * Class FieldtypeImagePicker
+ */
+class FieldtypeImagePicker extends FieldtypeText {
+
+    protected $sid;
+
+    /**
+     * Get information about this module
+     *
+     * @return array
+     */
+    public static function getModuleInfo() {
+        return [
+            'title' => 'ImagePicker Field',
+            'version' => 100,
+            'summary' => 'Field that stores an Image URL.',
+            'installs' => 'InputfieldImagePicker, ImagePickerList',
+        ];
+    }
+
+    /**
+     * Per Module interface, this template method is called when all system classes are loaded and ready for API usage
+     */
+    public function init() {
+        parent::init();
+    }
+
+    /**
+     * Return new instance of the Inputfield associated with this Fieldtype
+     *
+     * @param Page $page
+     * @param Field $field
+     * @return Inputfield
+     */
+    public function getInputfield(Page $page, Field $field) {
+        /** @var InputfieldImagePicker $inputField */
+        $inputField = $this->modules->get("InputfieldImagePicker");
+        //$inputField->setFilters($field->filters);
+        $this->session->ip_filters = $field->filters;
+        $this->session->ip_thumbwidth = $field->thumnailwidth;
+
+        $inputField->setPage($page);
+        $inputField->setField($field);
+        $this->sid = 'ip_' . $page->id . '_' . $field->name;
+        $this->session->set($this->sid, array('sele' => $field->filters, 'thumbw' => $field->thumnailwidth));
+
+        return $inputField;
+    }
+
+    public function ___getConfigInputfields(Field $field) {
+
+        $inputfields = parent::___getConfigInputfields($field);
+
+        $f = $this->modules->get('InputfieldText');
+        $f->attr('name', 'filters');
+        $f->label = $this->_('Selectors');
+        $f->description = $this->_('Enter selectors to restrict page selection.');
+        $f->notes = $this->_('Example: template=MediaLibrary');
+        $f->icon = 'tags';
+        $f->attr('value', $field->get('filters'));
+        $inputfields->append($f);
+
+        $f = $this->modules->get('InputfieldInteger');
+        $f->attr('name', 'thumnailwidth');
+        $val = $field->get('thumnailwidth');
+        if (!$val)
+            $val = 150;
+        $f->attr('value', (int) $val);
+        $f->attr('size', 3);
+        $f->label = $this->_('Thumbnail width');
+        $f->description = $this->_('Pixels');
+        $f->collapsed = Inputfield::collapsedBlank;
+        $inputfields->append($f);
+
+        return $inputfields;
+    }
+
+}

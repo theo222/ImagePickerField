@@ -1,0 +1,47 @@
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color:white;
+}
+
+.flex-container>div {
+    background-color: #1c2836;
+    margin: 10px 10px 10px 0px;
+    padding:10x;
+    font-size: 30px;
+    width:150px;
+    height:150px;
+    vertical-align: middle;
+    border-radius: 5px;    
+}    
+
+.sys {
+    font-style: italic;   
+    background-color: #476689;
+    color:white;
+    padding-left: 5px;
+}
+
+.sys a {
+    color:white;
+}
+
+img { 
+    padding: 8px;    
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h3, h4, h5 {
+    margin: 15px 0 3px 0; 
+    background-color: #f0f3f7;
+    font-weight: bold;
+    padding: 3px;
+}

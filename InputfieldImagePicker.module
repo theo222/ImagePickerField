@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * Class InputfieldImagePicker
+ */
+class InputfieldImagePicker extends Inputfield {
+
+    const adminPageName = 'ImagePickerList';
+
+    protected $page;
+    protected $field;
+    protected $sid;
+    protected $lastfieldtype;
+
+    public static function getModuleInfo() {
+        return [
+            'title' => 'ImagePicker Input',
+            'version' => 101,
+            'summary' => 'Input field for Images.',
+            'requires' => 'FieldtypeImagePicker',
+        ];
+    }
+
+    public function setPage(Page $page) {
+        $this->page = $page;
+    }
+
+    public function setField(Field $field) {
+        $this->field = $field;
+    }
+
+    private function getAImage($imgpath) {
+        foreach ($this->wire->fields->find("type=FieldtypeImage") as $f) {
+            foreach ($this->wire->pages->find("$f.count>0") as $p) {
+                foreach ($p->$f as $i) {
+                    if (strpos($i->url, $imgpath) !== false) {
+                        $this->lastfieldtype = $f;
+                        return $i;
+                        break 2;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public function getImage() {
+        if (($this->page) && ($this->field)) {
+            $ifn = $this->page->get($this->field->name);
+            if ($ifn)
+                return $this->getAImage($ifn);
+            else
+                return null;
+        } else
+            return null;
+    }
+
+    public function ___render() {
+        $field = new InputfieldURL();
+        $this->sid = 'ip_' . $this->page->id . '_' . $this->field->name;
+
+        $field->set('name', $this->attr('name'));
+        $field->set('value', $this->attr('value'));
+        $field->set('class', 'InputfieldImagePickerInput');
+        $field->set('id', "isi_" . $this->sid);
+        $field->attr('data-sid', $this->sid);
+        $edurl = '';
+        if ($this->attr('value')) {
+            $imgobj = $this->getAImage($this->attr('value'));
+            if ($imgobj)
+                $edurl = $imgobj->page->editURL;
+        };
+        $pickerpage = $this->pages->get("name=" . self::adminPageName . ",template=admin")->url;
+        $html = $this->modules->get('InputfieldMarkup');
+        //Pass translations to JS
+        $html->markupText = '<script>config.translations_title="' . $this->_('Choose image') . '";config.translations_cancel="' . $this->_('Cancel') . '";config.urls.pickerpage="' . $pickerpage . '";</script>';
+        $html->markupText .= '<div class="IpPreviewImageDiv">';
+        if ($edurl)
+            $html->markupText .= '<a title="' . $this->_('Edit Original') . '" target="_blank" href="' . $edurl . '#wrap_Inputfield_' . $this->lastfieldtype . '">';
+        $html->markupText .= '<img class="IpPreviewImage" onerror="this.style.display=\'none\'" id="pv_' . $this->sid . '" src="' . $this->attr('value') . '">';
+        if ($edurl)
+            $html->markupText .= '</a>';
+        $html->markupText .= '</div>';
+
+        $btn = $this->modules->get('InputfieldButton');
+        $btn->attr('id', $this->attr('name') . "_imageselector_open");
+        $btn->attr('data-sid', $this->sid);
+        $btn->class .= " InputfieldImagePickerOpen";
+        $btn->icon = 'image';
+        $btn->value = '';
+
+        return $btn->render() . '<div class="InputfieldImagePickerText">' . $field->render() . '</div>' . $html->render();
+    }
+
+}
