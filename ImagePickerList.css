@@ -7,7 +7,7 @@
 .flex-container>div {
     background-color: #1c2836;
     margin: 10px 10px 10px 0px;
-    padding:10x;
+    padding:10px;
     font-size: 30px;
     width:150px;
     height:150px;
@@ -18,8 +18,8 @@
 .sys {
     font-style: italic;   
     background-color: #476689;
+    background-color: #6c8dae;
     color:white;
-    padding-left: 5px;
 }
 
 .sys a {
@@ -41,7 +41,7 @@ img {
 
 h3, h4, h5 {
     margin: 15px 0 3px 0; 
-    background-color: #f0f3f7;
+    background-color: #dee5ee;
     font-weight: bold;
-    padding: 3px;
+    padding: 5px 5px 5px 8px;
 }

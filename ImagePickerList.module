@@ -40,7 +40,6 @@ class ImagePickerList extends Process implements Module {
         if ($thumbw < 50)
             $thumbw = 150;
 
-
         $get = $this->input->get('id');
 
         $filter = '';
