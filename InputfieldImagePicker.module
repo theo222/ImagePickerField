@@ -56,7 +56,7 @@ class InputfieldImagePicker extends Inputfield {
     }
 
     public function ___render() {
-        $field = new InputfieldURL();
+        $field = new InputfieldText();
         $this->sid = 'ip_' . $this->page->id . '_' . $this->field->name;
 
         $field->set('name', $this->attr('name'));

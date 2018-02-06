@@ -3,7 +3,7 @@ $(document).ready(function () {
     $(".InputfieldImagePickerInput").on('change textInput input', function () {
         var sid = $(this).data('sid');
         var img = $("#pv_" + sid);
-        img.css('display', 'block');
+        img.css('display', 'inline-block');
         img.attr("src", $(this).val());
     });
 
@@ -45,7 +45,7 @@ $(document).ready(function () {
 
                 $("#isi_" + sid).val(newUrl);
                 var img = $("#pv_" + sid);
-                img.css('display', 'block');
+                img.css('display', 'inline-block');
                 img.attr("src", this.src);
                 $iframe.dialog("close");
             });

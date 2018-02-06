@@ -15,8 +15,12 @@
 
 .IpPreviewImage {
     max-height:180px;   
+    padding:5px;
+    border: 1px solid #d9e1ea;
 }
 
 .IpPreviewImageDiv {
     margin-top:10px;
+    max-width: 400px;
+
 }
