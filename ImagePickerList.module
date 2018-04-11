@@ -17,6 +17,7 @@ class ImagePickerList extends Process implements Module {
             'summary' => 'ImagePicker Lister',
             'singular' => true,
             'autoload' => false,
+			'permission' => 'imagepicker'
         );
     }
 
@@ -93,6 +94,17 @@ class ImagePickerList extends Process implements Module {
         $this->message("Installed to {$page->path}");
         if ($page->parent->name == 'setup')
             $this->message("ImageSelector installed.");
+            
+        // create imagepicker permission
+        $permission = $this->permissions->get("imagepicker");
+        if (!$permission->id) {
+            $permission = new Permission();
+            $permission->name = "imagepicker";
+            $permission->title = $this->_("Access Image Picker");
+            $permission->save();
+            $this->message("Created Permission: {$permission->name}");
+        }            
+            
     }
 
     /**
