@@ -143,6 +143,14 @@ class ImagePickerList extends Process implements Module {
             $this->message("Removed {$page->path}");
             $this->pages->delete($page);
         }
+        
+        // delete permission
+        $permission = $this->permissions->get("imagepicker");
+        if ($permission->id) {
+            $permission->delete();
+            $this->message("Deleted Permission: {$permission->name}");
+        }        
+        
     }
 
 }
