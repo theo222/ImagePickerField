@@ -22,6 +22,8 @@ FieldtypeImagePicker, InputfieldImagePicker, ImagePickerList
 
 Installing FieldtypeImagePicker will install the other modules too.
 
+Non superusers roles should be granted the "imagepicker" permission.
+
 
 ## Configuration Options
 
