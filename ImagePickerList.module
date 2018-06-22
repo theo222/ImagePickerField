@@ -66,6 +66,8 @@ class ImagePickerList extends Process implements Module {
         $filter .= $selectors;
         foreach ($this->fields->find("type=FieldtypeImage") as $f) {
             foreach ($this->pages->find("$f.count>0$filter") as $p) {
+				$ofstatus=$p->of();
+                $p->of(false);
                 $out .= '<h4><a href="' . $page->url . '?sid=' . $usid . '&id=' . $p->id . '&modal=1">' . $p->title . '</a> (' . count($p->$f) . ')</h4>';
                 if ($showimages) {
                     $out .= '<div class="flex-container">';
@@ -79,6 +81,7 @@ class ImagePickerList extends Process implements Module {
                     }
                     $out .= '</div>';
                 }
+                $p->of($ofstatus);
             }
         }
         return $out;

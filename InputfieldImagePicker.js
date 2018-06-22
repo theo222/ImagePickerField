@@ -17,8 +17,8 @@ $(document).ready(function () {
     function loadIframeLinkPicker(opener) {
 
         var sid = $(opener).attr('data-sid');
-        var insertLinkLabel = ' &nbsp;' + config.translations_title;
-        var cancelLabel = config.translations_cancel;
+        var insertLinkLabel = ' &nbsp;' + document.pp_translations_title;
+        var cancelLabel = document.pp_translations_cancel;
         var $iframe; // set after modalSettings down
 
         // settings for modal window
@@ -35,7 +35,8 @@ $(document).ready(function () {
         };
 
         // create modal window
-        var $iframe = pwModalWindow(config.urls.pickerpage + '?sid=' + encodeURIComponent(sid), modalSettings, 'medium');
+
+        var $iframe = pwModalWindow(document.pp_pickerpage + '?sid=' + encodeURIComponent(sid), modalSettings, 'medium');
 
         // modal window load event
         $iframe.load(function () {
