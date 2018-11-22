@@ -77,7 +77,7 @@ class ImagePickerList extends Process implements Module {
                             $i = $i->width(260);
                         } else
                             $origurl = $i->url;
-                        $out .= '<div class="imgcont"><img title="' . $i .': '. $i->description . '" class="selectableimg lazyload" data-origurl=' . $origurl . ' data-src="' . $i->url . '"></div>';
+                        $out .= '<div class="imgcont"><img title="' . ($i->description ? $i . '&#013;&#010;'.$i->description.'' : $i) . '" class="selectableimg lazyload" data-origurl=' . $origurl . ' data-src="' . $i->url . '"></div>';
                     }
                     $out .= '</div>';
                 }
