@@ -44,11 +44,13 @@ class InputfieldImagePicker extends Inputfield {
                 $p->of(false);
                 foreach ($p->$f as $img) {
                 if (is_object($img)) {
-                    if (strpos($img->url, $imgpath) !== false) {
-                        $this->lastfieldtype = $f;
-                        return $img;
-                        break 2;
-                    }
+		            $imgurl_without_ext  = preg_replace('/(?:jpg|jpeg|png|gif|webp)$/i', '', $img->url);
+		            $imgpath_withour_ext = preg_replace('/(?:jpg|jpeg|png|gif|webp)$/i', '', $imgpath);
+		              if (strpos($imgurl_without_ext, $imgpath_withour_ext) !== false) {
+			            $this->lastfieldtype = $f;
+			            return $img;
+			            break 2;
+		              }    
                   } 
                 }
                 $p->of($ofstatus);
